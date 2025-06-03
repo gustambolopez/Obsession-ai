@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Obsession AI Beta</title>
+      
+      <meta property="og:title" content="Obsession AI">
+      <meta property="og:description" content="Obsession. a shitty (right now) good looking proxy.">
+      <meta property="og:image" content="/public/imgs/obsession.png">
+      <meta name="theme-color" content="#b6b6b6">
+      <meta name="msapplication-TileColor" content="#b6b6b6">
+      
+      <link rel="icon" type="image/x-icon" href="/public/imgs/obsession.png">
+      
+      <link rel="stylesheet" href="/css/ai.css">
+      <link rel="stylesheet" href="/css/aitoast.css">
+      <link rel="stylesheet" href="/css/aisidebar.css">
+
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism-tomorrow.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css">
+
+      <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-WGJ2192JZY"></script>
+      <script>
+           window.dataLayer = window.dataLayer || [];
+           function gtag(){dataLayer.push(arguments);}
+           gtag('js', new Date());
+           gtag('config', 'G-WGJ2192JZY');
+      </script>
+   </head>
+   <body>
+      <script src="/js/ai.js" defer></script>
+      <script src="/js/aiload.js" defer></script>
+      
+      <div class="chat-container">
+           <div class="chat-header">
+             Obsession  <span class="version"><i class="fas fa-robot"></i></span>
+           </div>
+           
+           <div class="branding">
+             <img src="/imgs/obsession.png" alt="Waves AI Logo">
+             <div>Obsession</div>
+           </div>
+           
+           <div class="chat-options">
+             <div class="option">
+                <label for="modelSelector"></label>
+                <div class="selector" id="modelSelector">
+                  <div class="selector-selected">Llama 3.1 8B Instant</div>
+                  <div class="selector-options">
+                     <div data-value="llama-3.1-8b-instant">Llama 3.1 8B Instant</div>
+                     <div data-value="llama-3.3-70b-versatile">Llama 3.3 70B Versatile</div>
+                     <div data-value="deepseek-r1-distill-llama-70b">Deepseek R1 Distill Llama 70B</div>
+                     <div data-value="gemma2-9b-it">Gemma2 9B IT</div>
+                  </div>
+                </div>
+             </div>
+           </div>
+           
+           <div class="chat-body" id="chatBody"></div>
+           <div class="suggestions-container" id="suggestionsContainer"></div>
+           
+           <div class="chat-input">
+             <input type="text" id="aiInput" placeholder="What would you like to talk about?" autocomplete="off">
+             <input type="file" id="imageUpload" accept="image/*" style="display:none;">
+             <button id="sendMsg"><i class="fas fa-arrow-up"></i></button>
+           </div>
+      </div>
+      <div>
+           </div>
+      </div>
+   </body>
+</html>
