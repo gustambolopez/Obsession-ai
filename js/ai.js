@@ -308,7 +308,6 @@ function regenerateResponse(lastContent) {
 
         chatBody.removeChild(chatBody.lastChild);
         if (chatBody.lastChild && chatBody.lastChild.classList.contains('user-message') && chatBody.lastChild.textContent.trim() === lastUserMessageContent.trim()) {
-            // This block is empty, it seems to imply no action needed if the last message is already the user's
         } else {
             displayMessage(lastUserMessageContent, 'user', lastUserMessageImage);
         }
