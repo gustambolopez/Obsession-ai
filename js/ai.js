@@ -88,6 +88,25 @@ function displayMessage(content, sender, image = null) {
 
     if (sender === 'ai') {
         const codeBlocks = messageElement.querySelectorAll('pre code');
+        const aiButtons = document.createElement('div');
+        aiButtons.classList.add('ai-buttons');
+
+        const copyTextButton = document.createElement('button');
+        copyTextButton.classList.add('ai-button', 'copy-button');
+        copyTextButton.innerHTML = '<i class="ri-clipboard-line"></i>';
+        copyTextButton.title = 'Copy text';
+        copyTextButton.onclick = () => copyCode(textElement.textContent, copyTextButton);
+        aiButtons.appendChild(copyTextButton);
+
+        const regenerateButton = document.createElement('button');
+        regenerateButton.classList.add('ai-button', 'regenerate-button');
+        regenerateButton.innerHTML = '<i class="ri-loop-left-line"></i>';
+        regenerateButton.title = 'Regenerate';
+        regenerateButton.onclick = () => regenerateResponse(content);
+        aiButtons.appendChild(regenerateButton);
+
+        messageElement.appendChild(aiButtons);
+
         codeBlocks.forEach(block => {
             const lang = block.className.match(/language-(\w+)/);
             const language = lang ? lang[1] : 'plaintext';
@@ -100,28 +119,28 @@ function displayMessage(content, sender, image = null) {
             langLabel.textContent = language;
             codeBlockWrapper.appendChild(langLabel);
 
-            const copyButton = document.createElement('button');
-            copyButton.classList.add('ai-button', 'copy-button');
-            copyButton.innerHTML = '<i class="ri-file-copy-line"></i>';
-            copyButton.title = 'Copy code';
-            copyButton.onclick = () => copyCode(block.textContent, copyButton);
+           
+            const copyCodeButton = document.createElement('button');
+            copyCodeButton.classList.add('ai-button', 'copy-button');
+            copyCodeButton.innerHTML = '<i class="ri-clipboard-line"></i>';
+            copyCodeButton.title = 'Copy code';
+            copyCodeButton.onclick = () => copyCode(block.textContent, copyCodeButton);
 
-            const regenerateButton = document.createElement('button');
-            regenerateButton.classList.add('ai-button', 'regenerate-button');
-            regenerateButton.innerHTML = '<i class="ri-refresh-line"></i>';
-            regenerateButton.title = 'Regenerate';
-            regenerateButton.onclick = () => regenerateResponse(content);
+            const codeButtons = document.createElement('div');
+            codeButtons.classList.add('ai-buttons');
+            codeButtons.appendChild(copyCodeButton);
+            
 
-            const aiButtons = document.createElement('div');
-            aiButtons.classList.add('ai-buttons');
-            aiButtons.appendChild(copyButton);
-            aiButtons.appendChild(regenerateButton);
+            block.parentNode.insertBefore(langLabel, block); 
+            block.parentNode.insertBefore(codeButtons, block.nextSibling); 
 
-            codeBlockWrapper.appendChild(block.parentNode);
-            codeBlockWrapper.appendChild(aiButtons);
-            messageElement.replaceChild(codeBlockWrapper, textElement);
+            if (typeof hljs !== 'undefined') {
+                hljs.highlightElement(block);
+            }
         });
-        hljs.highlightAll();
+        if (typeof hljs !== 'undefined') {
+            hljs.highlightAll(); 
+        }
     }
 }
 
@@ -253,6 +272,7 @@ async function sendMessage(text, image = null) {
 
                             const lastMessageElement = chatBody.lastChild;
                             if (lastMessageElement && lastMessageElement.classList.contains('ai-message') && !lastMessageElement.classList.contains('thinking-indicator')) {
+                               
                                 lastMessageElement.querySelector('.message-text').innerHTML = marked.parse(aiResponseContent);
                             } else {
                                 displayMessage(aiResponseContent, "ai");
@@ -322,7 +342,11 @@ function copyCode(code, button) {
     navigator.clipboard.writeText(code).then(() => {
         button.innerHTML = '<i class="ri-check-line"></i>';
         setTimeout(() => {
-            button.innerHTML = '<i class="ri-file-copy-line"></i>';
+            if (button.classList.contains('copy-button')) { 
+                button.innerHTML = '<i class="ri-clipboard-line"></i>'; 
+            } else {
+                button.innerHTML = '<i class="ri-file-copy-line"></i>';
+            }
         }, 2000);
     }).catch(err => {
         console.error('Error copying text: ', err);
@@ -352,7 +376,7 @@ function updateSuggestions(inputText) {
             suggestionsContainer.appendChild(suggestionDiv);
         });
         suggestionsContainer.style.display = "flex";
-        branding.style.display = "flex";
+        branding.style.display = "none";
     } else {
         suggestionsContainer.style.display = "none";
     }
