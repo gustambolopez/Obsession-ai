@@ -389,7 +389,7 @@ function handleFeedback(type, activeBtn, inactiveBtn) {
             inactiveBtn.classList.remove('selected');
             inactiveBtn.innerHTML = type === 'like' ? '<i class="ri-thumb-down-line"></i>' : '<i class="ri-thumb-up-line"></i>';
         }
-        showToast(`Thank you for your ${type} feedback!`, "success");
+        showToast(`Thank you for your feedback!`, "success");
     }
 }
 
