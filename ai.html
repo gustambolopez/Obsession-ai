@@ -4,13 +4,16 @@
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Obsession AI Beta</title>
+
      <meta property="og:title" content="Obsession AI">
-     <meta property="og:description" content="Obsession. a shitty (right now) good looking proxy">
-     <meta property="og:image" content="/imgs/obsession.png"> 
+     <meta property="og:description" content="Obsession. a shitty (right now) good looking proxy (youre seeing the ai site in case youre a rtrd).">
+     <meta property="og:image" content="/public/imgs/obsession.png"> 
      <meta name="theme-color" content="#b6b6b6">
      <meta name="msapplication-TileColor" content="#b6b6b6">
+     <meta name="keywords"
+     content="ai, unblocked, proxy, school, obsession, sigma">
 
-     <link rel="icon" type="image/x-icon" href="/imgs/obsession.png"> 
+     <link rel="icon" type="image/x-icon" href="/public/imgs/obsession.png"> 
 
      <link rel="stylesheet" href="css/ai.css">
      <link rel="stylesheet" href="css/aitoast.css">
@@ -18,45 +21,38 @@
 
      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism-tomorrow.min.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/vs2015.min.css">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.css">
 
    </head>
-   <style>
-  body {
-    background-image: url('https://cdn.jsdelivr.net/gh/gustambolopez/forcdn@main/asd12.png'); /* Reemplaza 'image_27db27.jpg' con la ruta correcta si la imagen no está en la misma carpeta */
-    background-size: cover; 
-    background-repeat: no-repeat; 
-    background-attachment: fixed; 
-    background-position: center center; 
-  }
-</style>
    <body>
      <div id="vanta-background"></div> 
 
      <div class="chat-container">
         <div class="chat-header">
-          <div class="header-content">
-            <img src="imgs/obsession.png" alt="Obsession AI Logo" class="header-logo">
-            Obsession <span class="version"><i class="ri-robot-2-line"></i></span>
-          </div>
-          <div class="selector" id="modelSelector">
-            <div class="selector-selected">Llama 3.1 8B Instant</div>
-            <div class="selector-options">
-               <div data-value="llama-3.1-8b-instant">Llama 3.1 8B Instant</div>
-               <div data-value="llama-3.3-70b-versatile">Llama 3.3 70B Versatile</div>
-               <div data-value="deepseek-r1-distill-llama-70b">Deepseek R1 Distill Llama 70B</div>
-               <div data-value="gemma2-9b-it">Gemma2 9B IT</div>
-               <div data-value="mixtral-8x7b-32768">Mixtral 8x7B 32768</div>
-            </div> 
-          </div>
+          Obsession <span class="version"><i class="ri-robot-2-line"></i></span>
         </div>
 
         <div class="branding">
+          <img src="imgs/obsession.png" alt="Obsession AI Logo"> 
           <div>Obsession</div>
         </div>
 
-        
+        <div class="chat-options">
+          <div class="option">
+            <label for="modelSelector"></label>
+            <div class="selector" id="modelSelector">
+              <div class="selector-selected">Llama 3.1 8B Instant</div>
+              <div class="selector-options">
+                 <div data-value="llama-3.1-8b-instant">Llama 3.1 8B Instant</div>
+                 <div data-value="llama-3.3-70b-versatile">Llama 3.3 70B Versatile</div>
+                 <div data-value="deepseek-r1-distill-llama-70b">Deepseek R1 Distill Llama 70B</div>
+                 <div data-value="gemma2-9b-it">Gemma2 9B IT</div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div class="chat-body" id="chatBody"></div>
         <div class="suggestions-container" id="suggestionsContainer"></div>
@@ -69,7 +65,7 @@
      </div>
 
      <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/prism.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
      
      <script async src="https://www.googletagmanager.com/gtag/js?id=G-WGJ2192JZY"></script>
@@ -86,15 +82,15 @@
      <script>
      VANTA.FOG({
        el: "#vanta-background",
-       mouseControls: true,
+        mouseControls: true,
         touchControls: true,
         gyroControls: false,
         minHeight: 200.00,
         minWidth: 200.00,
-        highlightColor: 0x3498DB, // Azul claro
-        midtoneColor: 0x2C3E50,   // Azul medio
-        lowlightColor: 0x1A2A40,  // Azul oscuro
-        baseColor: 0x1A40,      // Azul muy oscuro para la base
+        highlightColor: 0x3498DB, 
+        midtoneColor: 0x2C3E50,   
+        lowlightColor: 0x1A2A40,  
+        baseColor: 0x1A40,      
         blurFactor: 0.90,
         speed: 1.50,
         zoom: 0.8
@@ -102,6 +98,6 @@
      </script>
 
      <script src="js/ai.js"></script>
-     <script src="js/aiload.js"></script>
+      <script src="js/aiload.js"></script>
    </body>
 </html>

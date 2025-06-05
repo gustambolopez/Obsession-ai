@@ -13,6 +13,7 @@ const chatBody = document.getElementById("chatBody");
 const branding = document.querySelector(".branding");
 const aiInput = document.getElementById("aiInput");
 const sendMsg = document.getElementById("sendMsg");
+const aiAvatarUrl = 'https://cdn.jsdelivr.net/gh/gustambolopez/forcdn@main/obsession.png';
 const modelSelector = document.getElementById("modelSelector");
 const modelSelected = modelSelector.querySelector(".selector-selected");
 const modelOptions = modelSelector.querySelector(".selector-options");
@@ -71,7 +72,12 @@ function displayMessage(content, sender, image = null) {
     const messageElement = document.createElement("div");
     messageElement.classList.add("message", `${sender}-message`);
 
-    if (image) {
+    if (sender === 'ai') {
+        const avatarElement = document.createElement("img");
+        avatarElement.src = aiAvatarUrl;
+        avatarElement.classList.add("message-avatar");
+        messageElement.appendChild(avatarElement);
+    } else if (image) {
         const imgElement = document.createElement("img");
         imgElement.src = image;
         imgElement.classList.add("message-image");
@@ -105,6 +111,20 @@ function displayMessage(content, sender, image = null) {
         regenerateButton.onclick = () => regenerateResponse(content);
         aiButtons.appendChild(regenerateButton);
 
+        const likeButton = document.createElement('button');
+        likeButton.classList.add('ai-button', 'like-button');
+        likeButton.innerHTML = '<i class="ri-thumb-up-line"></i>';
+        likeButton.title = 'Like';
+        likeButton.onclick = () => handleFeedback('like', likeButton, dislikeButton);
+        aiButtons.appendChild(likeButton);
+
+        const dislikeButton = document.createElement('button');
+        dislikeButton.classList.add('ai-button', 'dislike-button');
+        dislikeButton.innerHTML = '<i class="ri-thumb-down-line"></i>';
+        dislikeButton.title = 'Dislike';
+        dislikeButton.onclick = () => handleFeedback('dislike', dislikeButton, likeButton);
+        aiButtons.appendChild(dislikeButton);
+
         messageElement.appendChild(aiButtons);
 
         codeBlocks.forEach(block => {
@@ -118,8 +138,7 @@ function displayMessage(content, sender, image = null) {
             langLabel.classList.add('code-lang');
             langLabel.textContent = language;
             codeBlockWrapper.appendChild(langLabel);
-
-           
+            
             const copyCodeButton = document.createElement('button');
             copyCodeButton.classList.add('ai-button', 'copy-button');
             copyCodeButton.innerHTML = '<i class="ri-clipboard-line"></i>';
@@ -148,6 +167,7 @@ function addThinkingIndicator() {
     const thinkingElement = document.createElement("div");
     thinkingElement.classList.add("message", "ai-message", "thinking-indicator");
     thinkingElement.innerHTML = `
+        <img src="${aiAvatarUrl}" class="message-avatar">
         <div class="message-text">Thinking<span class="thinking-dots"><span>.</span><span>.</span><span>.</span></span></div>
     `;
     chatBody.appendChild(thinkingElement);
@@ -272,7 +292,6 @@ async function sendMessage(text, image = null) {
 
                             const lastMessageElement = chatBody.lastChild;
                             if (lastMessageElement && lastMessageElement.classList.contains('ai-message') && !lastMessageElement.classList.contains('thinking-indicator')) {
-                               
                                 lastMessageElement.querySelector('.message-text').innerHTML = marked.parse(aiResponseContent);
                             } else {
                                 displayMessage(aiResponseContent, "ai");
@@ -326,12 +345,15 @@ function regenerateResponse(lastContent) {
         const lastUserMessageContent = lastUserMessage.content;
         const lastUserMessageImage = lastUserMessage.image;
 
-        chatBody.removeChild(chatBody.lastChild);
-        if (chatBody.lastChild && chatBody.lastChild.classList.contains('user-message') && chatBody.lastChild.textContent.trim() === lastUserMessageContent.trim()) {
-        } else {
-            displayMessage(lastUserMessageContent, 'user', lastUserMessageImage);
+        const lastAiMessageElement = chatBody.lastChild;
+        if (lastAiMessageElement && lastAiMessageElement.classList.contains('ai-message')) {
+            lastAiMessageElement.remove();
         }
 
+        if (!(chatBody.lastChild && chatBody.lastChild.classList.contains('user-message') && chatBody.lastChild.querySelector('.message-text').textContent.trim() === lastUserMessageContent.trim())) {
+             displayMessage(lastUserMessageContent, 'user', lastUserMessageImage);
+        }
+        
         sendMessage(lastUserMessageContent, lastUserMessageImage);
     } else {
         showToast("No user message to regenerate from.", "info");
@@ -352,6 +374,23 @@ function copyCode(code, button) {
         console.error('Error copying text: ', err);
         showToast("Failed to copy code.", "error");
     });
+}
+
+function handleFeedback(type, activeBtn, inactiveBtn) {
+    if (activeBtn.classList.contains('selected')) {
+        activeBtn.classList.remove('selected');
+        activeBtn.innerHTML = type === 'like' ? '<i class="ri-thumb-up-line"></i>' : '<i class="ri-thumb-down-line"></i>';
+        showToast(`Feedback removed: ${type}d.`, "info");
+    } else {
+        activeBtn.classList.add('selected');
+        activeBtn.innerHTML = type === 'like' ? '<i class="ri-thumb-up-fill"></i>' : '<i class="ri-thumb-down-fill"></i>';
+        
+        if (inactiveBtn.classList.contains('selected')) {
+            inactiveBtn.classList.remove('selected');
+            inactiveBtn.innerHTML = type === 'like' ? '<i class="ri-thumb-down-line"></i>' : '<i class="ri-thumb-up-line"></i>';
+        }
+        showToast(`Thank you for your ${type} feedback!`, "success");
+    }
 }
 
 function updateSuggestions(inputText) {
@@ -382,11 +421,8 @@ function updateSuggestions(inputText) {
     }
 }
 
-
-
 document.addEventListener("DOMContentLoaded", async () => {
     await fetchApiKeys();
-
 
     modelSelected.textContent = modelDisplayNames[modelSourceValue];
     updateSuggestions("");
